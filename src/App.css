@@ -1,19 +1,5 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
@@ -21,18 +7,88 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: rgba(255, 255, 255, 0.8);
 }
 
-.App-link {
-  color: #61dafb;
+h1 {
+  font-size: xx-large;
 }
 
-@keyframes App-logo-spin {
+ul {
+  list-style-type: none;
+  padding: 10px;
+  margin: calc(10px + 2vmin);
+}
+
+.guess {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-around;
+  line-height: 25px;
+  list-style: none;
+  margin: 0;
+  margin-bottom: 15px;
+  padding: 0;
+}
+
+.guess > .tile:not(:first-child) {
+  margin-left: 15px;
+}
+
+.tile {
+  border: 2px solid rgba(0, 0, 0, 1);
+  font-size: 50px;
+  flex: 1 0 auto;
+  height: 40px;
+  padding: 20px;
+  width: 40px;
+}
+
+.misplaced {
+  background-color: orange;
+  animation-duration: 1s;
+  animation-name: flip;
+}
+
+.correct {
+  background-color: green;
+  animation-duration: 1s;
+  animation-name: flip;
+}
+
+@keyframes flip {
   from {
-    transform: rotate(0deg);
+    transform: rotateY(0deg);
   }
   to {
-    transform: rotate(360deg);
+    transform: rotateY(360deg);
   }
+}
+
+.tile > span {
+  text-align: center;
+  vertical-align: middle;
+}
+
+input {
+  border: 1px solid rgba(0, 0, 0, 1);
+  font-size: 25px;
+  height: 30px;
+  margin: 5px;
+  padding: 3px;
+}
+
+.letters {
+  padding: 0;
+  margin: calc(10px + 2vmin);
+}
+
+.letters > div > span {
+  padding: 2px;
+  margin: 2px;
+}
+
+.letters > div > span.correct {
+  padding: 2px;
+  margin: 2px;
 }

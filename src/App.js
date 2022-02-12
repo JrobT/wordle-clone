@@ -2,15 +2,17 @@ import React from 'react';
 import GuessList from './components/guess-list';
 import GuessInput from './components/guess-input';
 import Info from './components/info';
+import { getRandomWord } from './solver/solver';
 import { wordLength } from './constants';
 import './App.css';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props)
+
     this.state = {
       guesses: [],
-      chosenWord: "trust",
+      chosenWord: getRandomWord(),
       letterGroups: ["abcdefghi", "jklmnopqr", "stuvwxyz"]
     };
   }

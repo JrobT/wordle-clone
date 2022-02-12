@@ -12,10 +12,16 @@ export default class App extends React.Component {
 
     this.state = {
       guesses: [],
-      chosenWord: getRandomWord(),
+      chosenWord: "",
       letterGroups: ["abcdefghi", "jklmnopqr", "stuvwxyz"]
     };
   }
+
+  async componentDidMount() {
+    const chosenWord = await getRandomWord();
+    console.log(`Chosen: ${chosenWord}`);
+    this.setState({ chosenWord });
+  };
 
   checkGuess = (guessedWord) => {
     let result = [];

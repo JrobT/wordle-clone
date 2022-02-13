@@ -1,23 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React, { useState } from "react";
+import { Overlay } from "react-portal-overlay";
 
-const Modal = (props) => {
-  return ReactDOM.createPortal(
-    this.props.children,
-    <div className="overlay">
-      <h1 className="result-heading">
-        {props.result ? "Well done!" : "Better luck next time!"}
-      </h1>
-    </div>
-  );
-};
+export default function Result() {
+  const [open, setOpen] = useState(false);
 
-const Result = (props) => {
   return (
-    <div>
-      {props.show && <Modal in={props.show}>Click anywhere to close</Modal>}
-    </div>
+    <Overlay open={open} onClose={() => setOpen(false)}>
+      <h1>My overlay</h1>
+    </Overlay>
   );
-};
-
-export default Result;
+}

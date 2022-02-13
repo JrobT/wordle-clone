@@ -2,19 +2,13 @@ import React from "react";
 import Tile from "./tile";
 import { wordLength } from "../constants";
 
-const Guess = (props) => {
-  const getTiles = (props) => {
+export default function Guess({ key, word, colours }) {
+  const getTiles = () => {
     const tiles = [];
 
-    for (let i = 0; i < wordLength; i++) {
-      if (props.word) {
-        tiles.push(
-          <Tile
-            key={i}
-            letter={props.word[i]}
-            colour={props.colours[i]}
-          />
-        );
+    for (let i = 0; i < wordLength; i += 1) {
+      if (word) {
+        tiles.push(<Tile key={i} letter={word[i]} colour={colours[i]} />);
       } else {
         tiles.push(<Tile key={i} />);
       }
@@ -24,10 +18,8 @@ const Guess = (props) => {
   };
 
   return (
-    <li key={props.key} className="guess">
-      {getTiles(props)}
+    <li key={key} className="guess">
+      {getTiles()}
     </li>
   );
-};
-
-export default Guess;
+}

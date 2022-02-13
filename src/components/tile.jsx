@@ -2,23 +2,24 @@ import React from "react";
 
 class Tile extends React.Component {
   getColour = () => {
-    switch (this.props.colour) {
+    const { colour } = this.props;
+
+    switch (colour) {
       case 1:
         return "tile misplaced";
       case 2:
         return "tile correct";
       default:
-        return "tile"
+        return "tile";
     }
   };
 
   render() {
+    const { key, letter } = this.props;
+
     return (
-      <div
-        key={this.props.key}
-        className={this.getColour()}
-      >
-        <span>{this.props.letter}</span>
+      <div key={key} className={this.getColour()}>
+        <span>{letter}</span>
       </div>
     );
   }

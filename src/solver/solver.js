@@ -8,8 +8,9 @@ async function fetchWordlistAsArray() {
 
 export const getRandomWord = async () => {
   const words = await fetchWordlistAsArray();
-  console.log(`Number of possible words: ${words.length}`);
   return words[Math.floor(Math.random() * words.length)];
 };
+
+export const getSuggestion = () => "word";
 
 export default getRandomWord;

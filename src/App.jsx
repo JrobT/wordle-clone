@@ -3,8 +3,9 @@ import GuessList from "./components/guess-list";
 import GuessInput from "./components/guess-input";
 import Info from "./components/info";
 import Result from "./components/result";
-import { getRandomWord } from "./solver/solver";
-import { wordLength, chances } from "./constants";
+import Suggestion from "./components/suggestion";
+import { getRandomWord, getSuggestion } from "./solver/solver";
+import { wordLength, chances, suggestions } from "./constants";
 import "./App.css";
 
 export default class App extends React.Component {
@@ -15,7 +16,8 @@ export default class App extends React.Component {
       guesses: [],
       chosenWord: "",
       letterGroups: ["abcdefghi", "jklmnopqr", "stuvwxyz"],
-      // foundWord: false,
+      suggestion: "",
+      foundWord: false,
       endGame: false,
     };
   }
@@ -24,6 +26,9 @@ export default class App extends React.Component {
     const chosenWord = await getRandomWord();
     console.log(`Chosen: ${chosenWord}`);
     this.setState({ chosenWord });
+
+    const suggestion = await getRandomWord();
+    this.setState({ suggestion });
   }
 
   checkGuess = (guessedWord) => {
@@ -32,8 +37,7 @@ export default class App extends React.Component {
 
     // if found word, set state and return all letters found
     if (guessedWord === chosenWord) {
-      // this.setState({ endGame: true, foundWord: true });
-      this.setState({ endGame: true });
+      this.setState({ endGame: true, foundWord: true });
       return Array(wordLength).fill(2);
     }
 
@@ -44,7 +48,10 @@ export default class App extends React.Component {
       if (chosenWord[i] === letter) {
         result = [...result, 2];
       } else if (chosenWord.includes(letter)) {
-        result = [...result, 1];
+        if (chosenWord.split(letter).length-1 === guessedWord.split(letter).length-1)
+          result = [...result, 1];
+        else
+          result = [...result, 0];
       } else {
         result = [...result, 0];
       }
@@ -64,27 +71,38 @@ export default class App extends React.Component {
     return result;
   };
 
-  makeGuess = (guessedWord) => {
-    const { guesses } = this.state;
-    const colours = this.checkGuess(guessedWord);
-    this.setState({
-      guesses: [...guesses, { guessedWord, colours }],
-    });
+  newSuggestion = () => {
+    const { endGame } = this.state;
+    const suggestion = getSuggestion();
 
-    // max guesses
-    if (guesses.length - 1 === chances) {
-      this.setState({ endGame: true });
+    if (!endGame) {
+      this.setState({ suggestion });
     }
   };
 
+  makeGuess = (guessedWord) => {
+    const colours = this.checkGuess(guessedWord);
+    this.setState(prevState => ({
+      guesses: [...prevState.guesses, { guessedWord, colours }],
+    }));
+
+    // can't await setState :/
+    if (this.state.guesses.length + 1 >= chances) {
+      this.setState({ endGame: true });
+    }
+
+    this.newSuggestion();
+  };
+
   render() {
-    const { guesses, endGame, letterGroups } = this.state;
+    const { guesses, chosenWord, letterGroups, suggestion, foundWord, endGame } = this.state;
     return (
       <div className="App">
         <h1>Word Guessing</h1>
-        <Result show={endGame} result={endGame} />
+        {suggestions && <Suggestion suggestion={suggestion} />}
+        {endGame && <Result foundWord={foundWord} chosenWord={chosenWord} />}
         <GuessList guesses={guesses} checkGuess={this.checkGuess} />
-        <GuessInput makeGuess={this.makeGuess} />
+        <GuessInput makeGuess={this.makeGuess} endGame={endGame} />
         <Info letterGroups={letterGroups} />
       </div>
     );

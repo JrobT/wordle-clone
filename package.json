@@ -19,6 +19,7 @@
     "prettier-fix": "prettier --write \"src/**/*.{js,jsx}\"",
     "lint": "npm run eslint && npm run prettier",
     "lint-fix": "npm run eslint-fix && npm run prettier-fix",
+    "test": "jest",
     "start": "react-scripts start"
   },
   "devDependencies": {

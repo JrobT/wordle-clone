@@ -5,6 +5,7 @@ import Info from "./components/info";
 import Result from "./components/result";
 import Suggestion from "./components/suggestion";
 import { getRandomWord, getSuggestion } from "./solver/solver";
+import comparison from "./solver/compare";
 import { wordLength, chances, suggestions } from "./constants";
 import "./App.css";
 
@@ -41,21 +42,7 @@ export default class App extends React.Component {
       return Array(wordLength).fill(2);
     }
 
-    // otherwise compare the words to get the colours
-    for (let i = 0; i < wordLength; i += 1) {
-      // 2 = correct, 1 = misplaced, 0 = incorrect
-      const letter = guessedWord[i];
-      if (chosenWord[i] === letter) {
-        result = [...result, 2];
-      } else if (chosenWord.includes(letter)) {
-        if (chosenWord.split(letter).length-1 === guessedWord.split(letter).length-1)
-          result = [...result, 1];
-        else
-          result = [...result, 0];
-      } else {
-        result = [...result, 0];
-      }
-    }
+    result = comparison(chosenWord, guessedWord);
 
     // remove from available letters
     const newLetterGroups = [...letterGroups];
@@ -82,7 +69,7 @@ export default class App extends React.Component {
 
   makeGuess = (guessedWord) => {
     const colours = this.checkGuess(guessedWord);
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       guesses: [...prevState.guesses, { guessedWord, colours }],
     }));
 
@@ -95,7 +82,14 @@ export default class App extends React.Component {
   };
 
   render() {
-    const { guesses, chosenWord, letterGroups, suggestion, foundWord, endGame } = this.state;
+    const {
+      guesses,
+      chosenWord,
+      letterGroups,
+      suggestion,
+      foundWord,
+      endGame,
+    } = this.state;
     return (
       <div className="App">
         <h1>Word Guessing</h1>

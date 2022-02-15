@@ -1,6 +1,6 @@
 import raw from "../data/words.txt";
 
-async function fetchWordlistAsArray() {
+export async function fetchWordlistAsArray() {
   return fetch(raw)
     .then((r) => r.text())
     .then((contents) => contents.split(/\r?\n/));
